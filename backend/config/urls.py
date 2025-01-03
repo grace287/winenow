@@ -15,7 +15,7 @@ urlpatterns = [
     path("api/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
 
     # 앱별 API
-    # path('api/users/', include('app.users.urls')),
+    path('api/users/', include('app.users.urls')),
     path('api/community/', include('app.community.urls')),  # 커뮤니티 CRUD
     path('api/notes/', include('app.notes.urls')),          # 노트 CRUD
     path('api/gallery/', include('app.gallery.urls')),      # 갤러리 CRUD
