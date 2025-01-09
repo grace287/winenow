@@ -29,6 +29,7 @@ venv/
 # Static & Media
 /static/
 /media/
+/staticfiles/
 
 # db
 *.sqlite3
