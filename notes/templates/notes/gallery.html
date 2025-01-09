@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>와인 시음 노트 갤러리</h1>
+    <a href="{% url 'notes:note_create' %}" class="button">시음 노트 추가</a>
+    <hr>
+
+    {% if page_obj %}
+        <div class="gallery">
+        {% for note in page_obj %}
+            <div class="gallery-item">
+              <a href="{% url 'notes:note_detail' note.id %}">
+                {% if note.image %}
+                <img src="{{ note.image.url }}" alt="와인 이미지" style="max-width: 100%; display:block;">
+                {% else %}
+                <div class="no-image">
+                </div>
+                {% endif %}
+                <h2>{{ note.wine_name }}</h2>
+                </a>
+            </div>
+        {% endfor %}
+        </div>
+
+       <!-- 페이지네이션 -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">« first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last »</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <p>시음 노트가 없습니다.</p>
+    {% endif %}
+{% endblock %}

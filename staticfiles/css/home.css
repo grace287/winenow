@@ -1,0 +1,172 @@
+/* 캘린더 스타일 */
+.calendar {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: sans-serif;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+.calendar th, .calendar td {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #eee; /* 테두리 색상 */
+    transition: background-color 0.3s;
+}
+
+
+.calendar th {
+    background-color: #f8f9fa; /* 헤더 배경색 */
+    font-weight: bold;
+    color: #495057;
+}
+
+/* 오늘 날짜 강조 */
+.calendar .today {
+    background-color: #e0f7fa; /* 오늘 날짜 배경색 */
+    border: 1px solid #80deea; /* 테두리 */
+    border-radius: 50%; /* 원형 */
+
+    font-weight: bold;
+}
+
+.calendar td:hover {
+    background-color: #f5f5f5; /* 마우스 호버 효과 */
+}
+
+.calendar td.has-note {
+    background-color: #e6f7ff; /* 시음 노트가 있는 날짜 */
+    position: relative;
+    cursor: pointer;
+}
+
+.calendar td.has-note:hover {
+    background-color:#ccebff;
+}
+
+
+.calendar td.has-note a {
+    display: block; /* a 태그가 셀 전체를 차지하도록 설정 */
+    padding: 5px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+
+.calendar td.has-note::before {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #007bff; /* 원형 표시 색상 */
+
+}
+
+/* 시음 노트 표시 */
+#notes-container {  /* notes-container 스타일 */
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.calendar-nav {
+    margin: 20px 0;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.calendar td.has-note {
+    background-color: #f9f9f9;
+    border: 2px solid #4CAF50;
+    cursor: pointer;
+}
+
+.calendar td.has-note:hover {
+    background-color: #e6ffe6;
+}
+
+.note-count {
+    display: block;
+    font-size: 12px;
+    color: #555;
+    margin-top: 5px;
+}
+
+.note-details {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    display: none; /* 기본적으로 숨김 */
+}
+
+.note-details.hidden {
+    display: none;
+}
+
+.nav-button {
+    margin: 0 10px;
+    font-size: 18px;
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-button:hover {
+    text-decoration: underline;
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 20px;
+    color: #555;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.has-note {
+    background-color: #e6f7ff;
+}
+
+.has-note:hover {
+    background-color: #d6efff;
+}
+
+.note-count {
+    font-size: 12px;
+    color: #555;
+    margin-top: 5px;
+}

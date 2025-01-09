@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/gallery.css' %}">
+    <div class="container mx-auto p-4">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl font-bold text-gray-900">갤러리</h1>
+
+<!-- 태그 필터링 -->
+<div class="tags">
+    <ul>
+        <li>
+            <a href="{% url 'gallery:gallery_view' %}" class="{% if not selected_tag %}active{% endif %}">전체</a>
+        </li>
+        {% for tag in tags %}
+        <li>
+            <a href="?tag={{ tag.slug }}" class="{% if tag == selected_tag %}active{% endif %}">{{ tag.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+            <div class="view-switch">
+                <button class="view-button {% if view == 'grid' %}active{% endif %}" data-view="grid">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    그리드
+                </button>
+                <button class="view-button {% if view == 'list' %}active{% endif %}" data-view="list">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.902A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3 3m0 0l-3-3m3 3v-6" />
+                    </svg>
+                    리스트
+                </button>
+            </div>
+        </div>
+
+{% if page_obj %}
+    <div class="gallery">
+    {% for note in page_obj %}
+        <div class="gallery-item">
+            <a href="{% url 'notes:note_detail' note.id %}">
+                {% if note.image %}
+                <img src="{{ note.image.url }}" alt="와인 이미지" style="max-width: 100%; display:block;">
+                {% else %}
+                <div class="no-image">이미지 없음</div>
+                {% endif %}
+                <h2>{{ note.wine_name }}</h2>
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+
+    <!-- 페이지네이션 -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if selected_tag %}&tag={{ selected_tag.slug }}{% endif %}">« 처음</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if selected_tag %}&tag={{ selected_tag.slug }}{% endif %}">이전</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if selected_tag %}&tag={{ selected_tag.slug }}{% endif %}">다음</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if selected_tag %}&tag={{ selected_tag.slug }}{% endif %}">마지막 »</a>
+            {% endif %}
+        </span>
+    </div>
+{% else %}
+    <p>시음 노트가 없습니다.</p>
+{% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+  const viewButtons = document.querySelectorAll('.view-button');
+  viewButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const view = button.dataset.view;
+      const currentURL = new URL(window.location.href);
+      currentURL.searchParams.set('view', view);
+      window.location.href = currentURL.toString();
+    });
+  });
+});
+    </script>
+{% endblock %}
+
+
+
+
+

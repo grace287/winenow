@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>와인 시음 노트</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/home.css">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />  <!-- FullCalendar CSS 추가 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+    <nav>
+       <div class="container">
+           <a href="{% url 'notes:home' %}">홈</a>
+           <a href="{% url 'gallery:gallery_view' %}">갤러리</a>
+            <a href="{% url 'dashboard:statistics' %}">통계</a>
+           <form action="{% url 'notes:search_notes' %}" method="get">
+               <input type="text" name="q" placeholder="검색...">
+               <button type="submit" class="button small">검색</button>
+           </form>
+
+           <form action="{% url 'notes:filter_notes' %}" method="get">
+                <select name="wine_type">
+                     <option value="">와인 종류</option>
+                    {% for key, value in notes.models.TastingNote.WINE_TYPES %}
+                     <option value="{{ key }}">{{ value }}</option>
+                     {% endfor %}
+                </select>
+                 <select name="country">
+                     <option value="">국가</option>
+                     {% for key, value in notes.models.TastingNote.WINE_PRODUCING_COUNTRIES %}
+                     <option value="{{ key }}">{{ value }}</option>
+                     {% endfor %}
+                 </select>
+              <button type="submit" class="button small">필터</button>
+           </form>
+           {% if user.is_authenticated %}
+                <a href="{% url 'users:profile' %}">내 정보</a>
+               <form method="post" action="{% url 'users:logout' %}">
+                {% csrf_token %}
+                <button type="submit">로그아웃</button>
+                </form>
+<!--                <a href="{% url 'notes:home' %}">로그아웃</a>-->
+            {% else %}
+                <a href="{% url 'users:signup' %}">회원가입</a>
+                <a href="{% url 'users:login' %}">로그인</a>
+            {% endif %}
+       </div>
+    </nav>
+    <div class="container">
+    {% block content %}
+    {% endblock %}
+    </div>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js' defer></script><!-- FullCalendar JavaScript 추가 -->
+</body>
+</html>

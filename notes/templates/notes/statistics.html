@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>와인 시음 노트 통계</h1>
+
+    <p><b>총 시음 노트 개수:</b> {{ total_notes_count }}</p>
+
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <!-- Chart.js 라이브러리 추가 -->
+
+    <div class="dashboard-container">
+        <div class="statistics-cards">
+            {% for card in statistics_cards %}
+              <div class="card" style="background-color:#f7f3fd">
+                    <i class="{{ card.icon }}"></i>
+                    <div class="card-body">
+                       <h2>{{ card.value }}</h2>
+                        <p>{{ card.label }}</p>
+                        <p class="change">{% if card.change > 0 %}+{% endif %}{{ card.change }}%</p> </div>
+               </div>
+            {% endfor %}
+        </div>
+
+        <div class="charts">
+            <div class="chart-item">
+                <canvas id="monthlyTrendChart"></canvas> </div>
+            <div class="chart-item">
+                <canvas id="wineTypeChart"></canvas> </div>
+            <div class="chart-item">
+                <canvas id="regionChart"></canvas> </div>
+            <div class="chart-item">
+                <canvas id="priceChart"></canvas> </div>
+        </div>
+    </div>
+
+    <script>
+       // Chart.js를 이용한 차트 생성
+        const monthlyTrendChart = new Chart(
+            document.getElementById('monthlyTrendChart'),
+            {
+                // Chart.js 설정
+            }
+        );
+        // ... (다른 차트들도 같은 방식으로 생성)
+    </script>
+
+<!--    <h2>와인 종류별 개수</h2>-->
+<!--    <ul>-->
+<!--        {% for type_count in wine_type_counts %}-->
+<!--        <li>{{ type_count.wine_type }}: {{ type_count.count }}</li>-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
+
+<!--      <h2>국가별 개수</h2>-->
+<!--    <ul>-->
+<!--        {% for country_count in country_counts %}-->
+<!--        <li>{{ country_count.country }}: {{ country_count.count }}</li>-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
+{% endblock %}

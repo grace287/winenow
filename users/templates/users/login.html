@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+<!--{% crispy form %}-->
+
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+    <!-- 왼쪽 와인 이미지/설명 섹션 -->
+    <div class="hidden lg:flex lg:w-1/2 bg-purple-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('{% static 'images/wine-bg.jpg' %}')] bg-cover bg-center opacity-20"></div>
+        <div class="relative z-10 flex flex-col justify-center px-12">
+            <h1 class="text-4xl font-bold mb-6">WineNote</h1>
+            <p class="text-xl text-purple-100 mb-4">나만의 와인 여정을 기록하세요</p>
+            <div class="space-y-4 text-purple-200">
+                <p class="flex items-center">
+                    <span class="w-1.5 h-1.5 bg-purple-300 rounded-full mr-2"></span>
+                    상세한 시음 노트 작성
+                </p>
+                <p class="flex items-center">
+                    <span class="w-1.5 h-1.5 bg-purple-300 rounded-full mr-2"></span>
+                    와인 셀러 관리
+                </p>
+                <p class="flex items-center">
+                    <span class="w-1.5 h-1.5 bg-purple-300 rounded-full mr-2"></span>
+                    테이스팅 일정 관리
+                </p>
+            </div>
+        </div>
+        <!-- 장식용 와인 글라스 SVG -->
+        <div class="absolute bottom-0 right-0 w-64 h-64 -mb-12 -mr-12 opacity-10">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zm0 12c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 오른쪽 로그인 폼 섹션 -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
+        <div class="w-full max-w-md">
+            <!-- 모바일에서만 보이는 로고 -->
+            <div class="lg:hidden text-center mb-8">
+                <h1 class="text-3xl font-bold text-purple-900">WineNote</h1>
+                <p class="text-gray-600">나만의 와인 여정을 기록하세요</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-xl shadow-sm">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8">로그인</h2>
+
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+
+                    <!-- 에러 메시지 -->
+                    {% if form.errors %}
+                    <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
+                        아이디 또는 비밀번호가 올바르지 않습니다.
+                    </div>
+                    {% endif %}
+
+                    <!-- 아이디 입력 -->
+                    <div>
+                        <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                            아이디
+                        </label>
+                        <input type="text" name="{{ form.username.html_name }}" id="{{ form.username.id_for_label }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                               required>
+                    </div>
+
+                    <!-- 비밀번호 입력 -->
+                    <div>
+                        <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                            비밀번호
+                        </label>
+                        <input type="password" name="{{ form.password.html_name }}" id="{{ form.password.id_for_label }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                               required>
+                    </div>
+
+                    <!-- 자동 로그인 -->
+                    <div class="flex items-center">
+                        <input type="checkbox" name="remember_me" id="remember_me"
+                               class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                        <label for="remember_me" class="ml-2 block text-sm text-gray-700">
+                            자동 로그인
+                        </label>
+                    </div>
+
+                    <!-- 로그인 버튼 -->
+                    <button type="submit"
+                            class="w-full bg-gradient-to-r from-purple-900 to-purple-700 text-white py-3 rounded-lg hover:from-purple-800 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                        로그인
+                    </button>
+
+                    <!-- 추가 링크 -->
+                    <div class="flex items-center justify-between text-sm">
+                        <a href="{% url 'users:password_reset' %}" class="text-purple-700 hover:text-purple-900">
+                            비밀번호 찾기
+                        </a>
+                        <a href="{% url 'users:signup' %}" class="text-purple-700 hover:text-purple-900">
+                            회원가입
+                        </a>
+                    </div>
+                </form>
+
+                <!-- 소셜 로그인 -->
+                <div class="mt-8">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-200"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">간편 로그인</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-2 gap-4">
+                        <button class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            <img src="{% static 'images/google-logo.png' %}" alt="Google" class="h-5 w-5 mr-2">
+                            Google
+                        </button>
+                        <button class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            <img src="{% static 'images/kakao-logo.png' %}" alt="Kakao" class="h-5 w-5 mr-2">
+                            Kakao
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<style>
+    @keyframes wine-pour {
+        0% { transform: translateY(-100%) rotate(-45deg); opacity: 0; }
+        100% { transform: translateY(0) rotate(-45deg); opacity: 0.1; }
+    }
+
+    .wine-pour-animation {
+        animation: wine-pour 2s ease-out infinite;
+    }
+</style>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>와인 시음 노트 통계</h1>
+
+    <p><b>총 시음 노트 개수:</b> {{ total_notes_count }}</p>
+
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <div class="dashboard-container">
+        <div class="statistics-cards">
+            {% for card in statistics_cards %}
+                <div class="card" style="background-color:#f7f3fd;">
+                    <i class="{{ card.icon }}"></i>
+                    <div class="card-body">
+                        <h2>{{ card.value }}</h2>
+                        <p>{{ card.label }}</p>
+                        <p class="change">{% if card.change > 0 %}+{% endif %}{{ card.change }}%</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="charts">
+            <div class="chart-item">
+                <canvas id="monthlyTrendChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="wineTypeChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="regionChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 차트 데이터를 JavaScript 변수로 전달
+        const monthlyTrendData = JSON.parse('{{ monthly_trend_data|safe }}');
+        const wineTypeCountsData = JSON.parse('{{ wine_type_counts|safe }}');
+        const regionCountsData = JSON.parse('{{ region_counts|safe }}');
+        const priceCountsData = JSON.parse('{{ price_counts|safe }}');
+
+        // 월별 시음 트렌드 차트
+        new Chart(document.getElementById('monthlyTrendChart'), {
+            type: 'line',
+            data: {
+                labels: monthlyTrendData.map(item => item.month),
+                datasets: [{
+                    label: '월별 시음 트렌드',
+                    data: monthlyTrendData.map(item => item.count),
+                    borderColor: '#6B3FA0',
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true, // Y축 시작점 0으로 설정
+                    }
+                }
+            }
+        });
+
+        // 와인 종류별 비율 차트
+        new Chart(document.getElementById('wineTypeChart'), {
+            type: 'pie',
+            data: {
+                labels: wineTypeCountsData.map(item => item.wine_type),
+                datasets: [{
+                    data: wineTypeCountsData.map(item => item.count),
+                    backgroundColor: [
+                        '#6B3FA0', '#a874b0', '#d4a1c8', '#e0c9e5', '#f2f0f7'
+                    ],
+                }]
+            },
+            options: {
+                responsive: true,
+            }
+        });
+
+        // 지역별 분포 차트
+        new Chart(document.getElementById('regionChart'), {
+            type: 'bar',
+            data: {
+                labels: regionCountsData.map(item => item.country),
+                datasets: [{
+                    data: regionCountsData.map(item => item.count),
+                    backgroundColor: '#6B3FA0',
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true, // Y축 시작점 0으로 설정
+                    }
+                }
+            }
+        });
+
+        // 가격대별 분포 차트
+        new Chart(document.getElementById('priceChart'), {
+            type: 'bar',
+            data: {
+                labels: priceCountsData.map(item => item.price_range),
+                datasets: [{
+                    data: priceCountsData.map(item => item.count),
+                    backgroundColor: '#6B3FA0',
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true, // Y축 시작점 0으로 설정
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}

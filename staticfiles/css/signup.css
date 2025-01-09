@@ -1,0 +1,335 @@
+
+/* 메인 컨테이너 */
+.signup-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8f2ff 0%, #ffffff 100%);
+    padding: 2rem;
+}
+
+/* 회원가입 카드 */
+.signup-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* 카드 헤더 */
+.signup-header {
+    background: #6B3FA0;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.signup-header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.signup-header p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+}
+
+/* 폼 컨테이너 */
+.signup-form-container {
+    padding: 2rem;
+}
+
+/* 폼 섹션 스타일 */
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-section h2 {
+    font-size: 1.5rem;
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* 입력 필드 그룹 */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #6B3FA0;
+    box-shadow: 0 0 0 3px rgba(107, 63, 160, 0.1);
+}
+
+/* 필수 필드 표시 */
+.required-field::after {
+    content: '*';
+    color: #e53e3e;
+    margin-left: 0.25rem;
+}
+
+/* 에러 메시지 */
+.error-message {
+    color: #e53e3e;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+/* 비밀번호 규칙 */
+.password-rules {
+    font-size: 0.875rem;
+    color: #718096;
+    margin-top: 0.5rem;
+}
+
+.password-rules ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.password-rules li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.password-rules li::before {
+    content: '•';
+    color: #6B3FA0;
+    margin-right: 0.5rem;
+}
+
+/* 약관 동의 섹션 */
+.terms-section {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.terms-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.terms-title {
+    font-size: 1.25rem;
+    color: #2d3748;
+    font-weight: 500;
+}
+
+/* 전체 동의 체크박스 */
+.agree-all {
+    padding: 1rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* 개별 약관 동의 */
+.terms-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.term-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 0.75rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+}
+
+/* 체크박스 커스텀 스타일 */
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.custom-checkbox input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.75rem;
+    accent-color: #6B3FA0;
+}
+
+/* 약관 보기 버튼 */
+.view-terms {
+    margin-left: auto;
+    color: #6B3FA0;
+    font-size: 0.875rem;
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+}
+
+.view-terms:hover {
+    background-color: rgba(107, 63, 160, 0.1);
+}
+
+/* 약관 모달 */
+.terms-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.terms-modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+    text-align: right;
+}
+
+/* 버튼 스타일 */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, #6B3FA0 0%, #8B5FBF 100%);
+    color: white;
+    border: none;
+    padding: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-secondary {
+    background: #f8fafc;
+    color: #4a5568;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+    background: #f1f5f9;
+}
+
+/* 로그인 링크 */
+.login-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+    color: #4a5568;
+}
+
+.login-link a {
+    color: #6B3FA0;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 640px) {
+    .signup-container {
+        padding: 1rem;
+    }
+
+    .signup-card {
+        border-radius: 1rem;
+    }
+
+    .signup-header {
+        padding: 1.5rem;
+    }
+
+    .signup-form-container {
+        padding: 1.5rem;
+    }
+
+    .term-item {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .view-terms {
+        margin-left: 2rem;
+    }
+}
+
+/* 애니메이션 */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.signup-card {
+    animation: slideIn 0.3s ease-out;
+}

@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}?v=1">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/modal.css' %}">
+
+<h1>내 시음노트</h1>
+<h1>{{ year }}년 {{ month }}월 시음 노트</h1>
+
+<!-- 캘린더 네비게이션 -->
+<div class="calendar-nav">
+    <a href="{% url 'notes:home' year=prev_year month=prev_month %}" class="nav-button">◀</a>
+    {{ year }}년 {{ month }}월
+    <a href="{% url 'notes:home' year=next_year month=next_month %}" class="nav-button">▶</a>
+</div>
+
+<!-- HTML 캘린더 출력 -->
+<div class="calendar">
+        {{ calendar|safe }}
+</div>
+<!--{{ calendar|safe }}-->
+
+<!-- 시음 노트 표시 영역 -->
+<div id="note-details" class="note-details hidden"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 날짜별 시음 노트 데이터 가져오기
+        const noteCounts = JSON.parse('{{ note_counts|escapejs }}');
+        const calendarCells = document.querySelectorAll('.calendar td:not(.noday)'); // 캘린더 날짜 셀 선택
+        const modal = document.getElementById('note-modal');
+        const closeModal = document.querySelector('.close-button');
+        const noteForm = document.getElementById('note-form');
+
+        // 캘린더 셀에 노트 추가
+        calendarCells.forEach(cell => {
+            const day = cell.textContent.trim(); // 셀의 날짜 가져오기
+            if (noteCounts[day]) {
+                cell.classList.add('has-note'); // 스타일 추가
+                cell.innerHTML += `<span class="note-count">(${noteCounts[day].length}개)</span>`; // 노트 개수 표시
+
+                // 클릭 이벤트 추가
+                cell.addEventListener('click', () => {
+                    const notesForDay = noteCounts[day];
+                    const noteDetails = document.getElementById('note-details');
+
+                    // 노트 HTML 생성
+                    let notesHtml = '<h3>시음 노트 목록</h3><ul>';
+                    notesForDay.forEach(note => {
+                        notesHtml += `<li><a href="/notes/${note.id}/">${note.wine_name}</a> (${note.tasting_date})</li>`;
+                    });
+                    notesHtml += '</ul>';
+
+                    // 노트 세부 정보 표시
+                    noteDetails.innerHTML = notesHtml;
+                    noteDetails.classList.remove('hidden'); // 숨김 해제
+                });
+            }
+        });
+
+        // "시음 노트 작성" 버튼 클릭 시 모달 열기
+        document.querySelector('.button').addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.remove('hidden');
+        });
+
+        // 모달 닫기 버튼
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        // 모달 외부 클릭 시 닫기
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+    });
+</script>
+<!-- 모달 열기 버튼 -->
+<button id="open-note-modal" class="button">시음 노트 작성</button>
+
+<script>
+    const noteCreateUrl = "{% url 'notes:note_create' %}";
+</script>
+
+    <!-- Modal -->
+    <div id="note-modal" class="modal hidden">
+        <div class="modal-content bg-white rounded-xl shadow-lg p-6">
+            <button class="close-button">×</button>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">시음 노트 작성</h2>
+            <form id="note-form" method="post" action="{% url 'notes:note_create' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">저장</button>
+</form>
+<!--            <form id="note-form" method="post" enctype="multipart/form-data">-->
+<!--                {% csrf_token %}-->
+<!--                {{ form.as_p }}-->
+<!--                <button type="submit" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">저장</button>-->
+<!--            </form>-->
+        </div>
+    </div>
+
+    <script src="{% static 'js/modal.js' %}"></script>
+    <script src="{% static 'js/home.js' %}"></script>
+{% endblock %}
